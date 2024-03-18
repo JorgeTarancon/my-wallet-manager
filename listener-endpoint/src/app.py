@@ -1,8 +1,15 @@
+######################
+#     LIBRARIES      #
+######################
 import time
 import os
 from datetime import datetime
 import logging
+######################
 
+######################
+#     FUNCTIONS      #
+######################
 def main():
     # Creamos el directorio de logs si no existe
     logs_dir = '../logs'
@@ -18,6 +25,11 @@ def main():
         logging.info(f"Escuchando y haciendo peticiones.")
         time.sleep(5)  # Ejemplo: espera 5 segundos antes de la próxima petición
         logging.info(f"Una peticion")
+######################
 
+######################
+#        MAIN        #
+######################
 if __name__ == "__main__":
     main()
+######################
