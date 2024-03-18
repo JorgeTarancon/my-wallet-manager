@@ -3,3 +3,6 @@ scriptName: my-wallet-manager
 appVersion: 1.0.0
 appDescription: My Wallet Manager is a simple application to manage your wallet.
 appAuthor: Jorge Tarancón Rey
+
+logs:
+  path: ../logs

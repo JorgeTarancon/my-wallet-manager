@@ -23,8 +23,12 @@ def start_streamlit_app(script_path, config):
 #        MAIN        #
 ######################
 
+# Read config file
+config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../config/my-wallet-manager.yml"))
+config = read_config(config_path)
+
 # Creamos el directorio de logs si no existe
-logs_dir = '../logs'
+logs_dir = config['logs']['path']
 os.makedirs(logs_dir, exist_ok=True)
 
 # Set logging
@@ -32,10 +36,6 @@ logging.basicConfig(filename=f'{logs_dir}/{datetime.now().date().strftime("%Y_%m
                     level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     filemode='w')
-
-# Read config file
-config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../config/my-wallet-manager.yml"))
-config = read_config(config_path)
 
 # Start Streamlit app
 if config:

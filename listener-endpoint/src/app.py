@@ -5,14 +5,16 @@ import time
 import os
 from datetime import datetime
 import logging
+
+from utils.utils import read_config
 ######################
 
 ######################
 #     FUNCTIONS      #
 ######################
-def main():
+def main(config: dict):
     # Creamos el directorio de logs si no existe
-    logs_dir = '../logs'
+    logs_dir = config['logs']['path']
     os.makedirs(logs_dir, exist_ok=True)
 
     # Set logging
@@ -30,6 +32,11 @@ def main():
 ######################
 #        MAIN        #
 ######################
+
+# Read config file
+config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../config/my-wallet-manager.yml"))
+config = read_config(config_path)
+
 if __name__ == "__main__":
-    main()
+    main(config)
 ######################
