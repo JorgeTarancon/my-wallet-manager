@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  streamlit:
+    build:
+      dockerfile: /streamlit-ui/deployment/Dockerfile
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./streamlit-ui:/app
+    command: ["sh", "-c", "cd /src && python app.py"]
+
+  listener:
+    build:
+      dockerfile: /listener-endpoint/deployment/Dockerfile
+    volumes:
+      - ./listener-endpoint:/app
+    command: ["sh", "-c", "cd /src && python app.py"]
