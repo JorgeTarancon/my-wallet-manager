@@ -7,26 +7,32 @@ from datetime import datetime
 import logging
 
 from utils.utils import read_config
+
 ######################
+
 
 ######################
 #     FUNCTIONS      #
 ######################
 def main(config: dict):
     # Creamos el directorio de logs si no existe
-    logs_dir = config['logs']['path']
+    logs_dir = os.path.join(os.path.dirname(__file__), config['logs']['path'])
     os.makedirs(logs_dir, exist_ok=True)
 
     # Set logging
-    logging.basicConfig(filename=f'{logs_dir}/{datetime.now().date().strftime("%Y_%m_%d")}.log',
-                        level=logging.INFO,
-                        format='%(asctime)s - %(levelname)s - %(message)s',
-                        filemode='w')
+    logging.basicConfig(
+        filename=f'{logs_dir}/{datetime.now().date().strftime("%Y_%m_%d")}.log',
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        filemode="w",
+    )
     while True:
         # Aquí colocarías la lógica para escuchar continuamente y hacer peticiones a la API de Yahoo Finance
         logging.info(f"Escuchando y haciendo peticiones.")
         time.sleep(5)  # Ejemplo: espera 5 segundos antes de la próxima petición
         logging.info(f"Una peticion")
+
+
 ######################
 
 ######################
