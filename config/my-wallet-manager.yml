@@ -6,3 +6,8 @@ appAuthor: Jorge Tarancón Rey
 
 logs:
   path: ../logs
+
+GoogleSheets:
+  credentials:
+    path: ../config/google_sheets_credentials.json
+  spreadsheetName: Mock_Cartera_de_acciones
