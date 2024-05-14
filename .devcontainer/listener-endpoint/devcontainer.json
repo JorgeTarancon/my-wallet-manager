@@ -3,19 +3,14 @@
 {
 	"name": "listener-endpoint-devcontainer",
 	"build": {
-		// Sets the run context to one level up instead of the .devcontainer folder.
-		"context": "../../listener-endpoint",
-		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-		"dockerfile": "../../listener-endpoint/dev.Dockerfile"
+		"context": "../../",//../../listener-endpoint
+		"dockerfile": "dev.Dockerfile"
 	},
-
 	"workspaceFolder": "/app",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=delegated",
 	"mounts": [
 		"source=${localEnv:USERPROFILE}/.gitconfig,target=/etc/gitconfig,type=bind,consistency=delegated"
 	],
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {
 			"ppa": true,
@@ -23,13 +18,9 @@
 		},
 		"ghcr.io/jungaretti/features/make:1": {}
 	},
-
-	//"postCreateCommand": "poetry install",
-
-	// Configure tool-specific properties.
+	//"postCreateCommand": "poetry config virtualenvs.create false && poetry install",
 	"customizations": {
 		"vscode": {
-		  // Add the IDs of extensions you want installed when the container is created.
 		  "extensions": [
 			"ms-python.python",
 			"ms-python.flake8",
