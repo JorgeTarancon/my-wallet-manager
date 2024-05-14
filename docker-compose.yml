@@ -2,17 +2,21 @@ version: '3.8'
 
 services:
   streamlit:
+    container_name: streamlit-ui
+    #image: test:latest
     build:
-      dockerfile: /streamlit-ui/deployment/Dockerfile
+      dockerfile: /deployment/streamlit-ui/Dockerfile
     ports:
       - "8501:8501"
-    volumes:
-      - ./streamlit-ui:/app
-    command: ["sh", "-c", "cd /src && python app.py"]
+#    volumes:
+#      - ./streamlit-ui:/app
 
   listener:
+    container_name: listener-endpoint
+    #image: test:latest
     build:
-      dockerfile: /listener-endpoint/deployment/Dockerfile
-    volumes:
-      - ./listener-endpoint:/app
-    command: ["sh", "-c", "cd /src && python app.py"]
+      dockerfile: /deployment/listener-endpoint/Dockerfile
+    ports:
+      - 8081:8081
+    #volumes:
+    #  - ./listener-endpoint:/app
