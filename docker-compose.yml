@@ -8,8 +8,8 @@ services:
       dockerfile: /deployment/streamlit-ui/Dockerfile
     ports:
       - "8501:8501"
-#    volumes:
-#      - ./streamlit-ui:/app
+    volumes:
+      - ./models:/app/models
 
   listener:
     container_name: listener-endpoint
@@ -18,5 +18,5 @@ services:
       dockerfile: /deployment/listener-endpoint/Dockerfile
     ports:
       - 8081:8081
-    #volumes:
-    #  - ./listener-endpoint:/app
+    volumes:
+      - ./models:/app/models
