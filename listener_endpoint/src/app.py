@@ -19,13 +19,13 @@ from utils.utils import read_config
 ######################
 #     FUNCTIONS      #
 ######################
-def main(config: dict):
+def main(app_config: dict):
     """
     Función principal.
     """
 
     # Creamos el directorio de logs si no existe
-    logs_dir = os.path.join(os.path.dirname(__file__), config['logs']['path'])
+    logs_dir = os.path.join(os.path.dirname(__file__), app_config['logs']['path'])
     os.makedirs(logs_dir, exist_ok=True)
 
     # Set logging

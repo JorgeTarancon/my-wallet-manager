@@ -17,13 +17,13 @@ from utils.utils import read_config
 ######################
 #     FUNCTIONS      #
 ######################
-def start_streamlit_app(script_path, config):
+def start_streamlit_app(script_path, app_config):
     """
     Start Streamlit app.
     """
 
     try:
-        subprocess.run(["streamlit", "run", script_path, f"{config}"], check=True)
+        subprocess.run(["streamlit", "run", script_path, f"{app_config}"], check=True)
     except subprocess.CalledProcessError as e:
         logging.error("Error when starting Streamlit app: %s", e)
 ######################
