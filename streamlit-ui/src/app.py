@@ -21,7 +21,7 @@ def start_streamlit_app(script_path, config):
     """
     Start Streamlit app.
     """
-    
+
     try:
         subprocess.run(["streamlit", "run", script_path, f"{config}"], check=True)
     except subprocess.CalledProcessError as e:
