@@ -16,7 +16,7 @@ def start_streamlit_app(script_path, config):
     try:
         subprocess.run(["streamlit", "run", script_path, f"{config}"], check=True)
     except subprocess.CalledProcessError as e:
-        logging.error(f"Error when starting Streamlit app: {e}")
+        logging.error("Error when starting Streamlit app: %s", e)
 ######################
 
 ######################
@@ -24,7 +24,9 @@ def start_streamlit_app(script_path, config):
 ######################
 
 # Read config file
-config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../config/my-wallet-manager.yml"))
+config_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../config/my-wallet-manager.yml")
+    )
 config = read_config(config_path)
 
 # Creamos el directorio de logs si no existe
@@ -40,8 +42,12 @@ logging.basicConfig(filename=f'{logs_dir}/{datetime.now().date().strftime("%Y_%m
 # Start Streamlit app
 if config:
     #if os.path.exists(f"src/{config['scriptName']}.py"):
-    if os.path.exists(os.path.join(os.path.dirname(__file__), f"{config['scriptName']}.py")):
-        start_streamlit_app(os.path.join(os.path.dirname(__file__), f"{config['scriptName']}.py"), str(config))
+    if os.path.exists(
+        os.path.join(os.path.dirname(__file__), f"{config['scriptName']}.py")
+        ):
+        start_streamlit_app(
+            os.path.join(os.path.dirname(__file__), f"{config['scriptName']}.py"), str(config)
+            )
     else:
-        logging.error(f"Error when starting Streamlit app: {config['scriptName']}.py does not exist. Please reviw configuration file.")
+        logging.error("Error when starting Streamlit app: %s.py does not exist. Please reviw configuration file.", config['scriptName'])
 ######################

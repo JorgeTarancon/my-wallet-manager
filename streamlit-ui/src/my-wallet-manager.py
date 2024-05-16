@@ -2,8 +2,8 @@
 #     LIBRARIES      #
 ######################
 import ast
-import streamlit as st
 import sys
+import streamlit as st
 import joblib
 import pandas as pd
 from utils.utils import read_gsheet
@@ -47,25 +47,25 @@ INGRESOS = left_column.slider("Earnings", 0.0, 4000.0, 2600.0)
 YEAR = right_column.slider("YEAR", 2020, 2100, 2024)
 MONTH = left_column.slider("MONTH", 1, 12, 7)
 
-model_name = st.selectbox("Estimator", ("Linear Regression", "XGBoost"))
+MODEL_NAME = st.selectbox("Estimator", ("Linear Regression", "XGBoost"))
 
 ask_spends = st.button("Get estimated monthly spends")
 
 if ask_spends:
-    if model_name == "Linear Regression":
-        model_name = "linearregression"
+    if MODEL_NAME == "Linear Regression":
+        MODEL_NAME = "linearregression"
     else:
-        model_name = "xgbregressor"
+        MODEL_NAME = "xgbregressor"
 
     # Load model from models folder
-    model = joblib.load(f"{config['Models']['path']}/{model_name}.joblib")
+    model = joblib.load(f"{config['Models']['path']}/{MODEL_NAME}.joblib")
     df = pd.DataFrame(
         data=[[INGRESOS, YEAR, MONTH]],
         columns=['INGRESOS', 'YEAR', 'MONTH'],
     )
     result = model.predict(df)
 
-    if model_name == "linearregression":
+    if MODEL_NAME == "linearregression":
         st.write(f"The estimated spends are: {round(result[0][0], 2)}")
     else:
         st.write(f"The estimated spends are: {round(result[0], 2)}")
