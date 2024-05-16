@@ -27,10 +27,11 @@ def main(config: dict):
         filemode="w",
     )
     while True:
-        # Aquí colocarías la lógica para escuchar continuamente y hacer peticiones a la API de Yahoo Finance
-        logging.info(f"Escuchando y haciendo peticiones.")
+        # Aquí colocarías la lógica para escuchar continuamente
+        # y hacer peticiones a la API de Yahoo Finance
+        logging.info("Escuchando y haciendo peticiones.")
         time.sleep(5)  # Ejemplo: espera 5 segundos antes de la próxima petición
-        logging.info(f"Una peticion")
+        logging.info("Una peticion")
 
 
 ######################
@@ -40,7 +41,9 @@ def main(config: dict):
 ######################
 
 # Read config file
-config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../config/my-wallet-manager.yml"))
+config_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__),"../../config/my-wallet-manager.yml")
+    )
 config = read_config(config_path)
 
 if __name__ == "__main__":

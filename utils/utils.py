@@ -2,8 +2,8 @@
 #     LIBRARIES      #
 ######################
 import os
-import yaml
 import logging
+import yaml
 import gspread
 ######################
 
@@ -11,21 +11,23 @@ import gspread
 #     FUNCTIONS      #
 ######################
 def read_yaml(file_path):
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         try:
             data = yaml.safe_load(file)
             return data
         except yaml.YAMLError as e:
-            logging.error(f"Error reading the file: {file_path} - {e}")
+            logging.error("Error reading the file: %s - %s", file_path, e)
+            return None
 
 def read_config(file_path):
     if os.path.exists(file_path):
         return read_yaml(file_path)
-    else:
-        logging.error(f"Error reading the file: {file_path} - File not found.")
-        return None
-    
-def read_gsheet(gc_credentials: str = None, spreadsheet_name: str = None, worksheet_name: str = None):
+    logging.error("Error reading the file: %s - File not found.", file_path)
+    return None
+
+def read_gsheet(gc_credentials: str = None,
+                spreadsheet_name: str = None,
+                worksheet_name: str = None):
 
     # Connect to Google Sheets
     gc = gspread.service_account(
