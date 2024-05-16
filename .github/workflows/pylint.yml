@@ -1,0 +1,33 @@
+name: Pylint
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11.9"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install poetry
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        pip install pylint
+        poetry config virtualenvs.create false
+    - name: Install dependencies for listener_endpoint component
+      working-directory: ./listener_endpoint
+      run: |
+        poetry install
+    - name: Install dependencies for streamlit_ui component
+      working-directory: ./streamlit_ui
+      run: |
+        poetry install
+    - name: Analysing the code with pylint
+      run: |
+        pylint $(git ls-files '*.py')
