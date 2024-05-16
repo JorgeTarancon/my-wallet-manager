@@ -32,7 +32,7 @@ st.set_page_config(
 )
 
 # Logo as header
-st.image("./streamlit-ui/images/header.png", use_column_width=True)
+st.image("./streamlit_ui/images/header.png", use_column_width=True)
 
 st.title(f"{config['appName']} :moneybag:")
 st.header("Estimate your monthly spends: set your requirements \

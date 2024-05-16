@@ -3,7 +3,7 @@ FROM python:3.11-slim-bullseye
 RUN apt-get update --fix-missing
 
 ENV HOMEDIR=/app
-ENV COMPONENT=/streamlit-ui
+ENV COMPONENT=/streamlit_ui
 
 RUN mkdir -p $HOMEDIR
 
@@ -19,4 +19,4 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false && cd $HOMEDIR$COMPONENT && poetry install
 
 # CHANGE: depending on component
-ENTRYPOINT ["python", "streamlit-ui/src/app.py"]
+ENTRYPOINT ["python", "streamlit_ui/src/app.py"]

@@ -5,7 +5,7 @@ services:
     container_name: streamlit-ui
     #image: test:latest
     build:
-      dockerfile: /deployment/streamlit-ui/Dockerfile
+      dockerfile: /deployment/streamlit_ui/Dockerfile
     ports:
       - "8501:8501"
     volumes:
@@ -15,7 +15,7 @@ services:
     container_name: listener-endpoint
     #image: test:latest
     build:
-      dockerfile: /deployment/listener-endpoint/Dockerfile
+      dockerfile: /deployment/listener_endpoint/Dockerfile
     ports:
       - 8081:8081
     volumes:

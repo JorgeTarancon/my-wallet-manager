@@ -3,7 +3,7 @@ FROM python:3.11-slim-bullseye
 RUN apt-get update --fix-missing
 
 ENV HOMEDIR=/app
-ENV COMPONENT=/streamlit-ui
+ENV COMPONENT=/streamlit_ui
 
 RUN mkdir -p $HOMEDIR
 

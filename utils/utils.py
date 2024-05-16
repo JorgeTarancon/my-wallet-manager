@@ -43,7 +43,7 @@ def read_gsheet(gc_credentials: str = None,
     """
     Read a Google Sheet.
     """
-    
+
     # Connect to Google Sheets
     gc = gspread.service_account(
         filename=gc_credentials)
