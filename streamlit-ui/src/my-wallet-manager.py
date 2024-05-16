@@ -4,9 +4,9 @@
 import ast
 import streamlit as st
 import sys
-import gspread
 import joblib
 import pandas as pd
+from utils.utils import read_gsheet
 ######################
 
 
@@ -24,15 +24,9 @@ config = ast.literal_eval(sys.argv[1])
 st.title(config['appName'])
 st.write(config['appDescription'])
 
-# Connect to Google Sheets
-gc = gspread.service_account(
-    filename=config['GoogleSheets']['credentials']['path'])
-
-# Open the Google Sheet
-sh = gc.open(config['GoogleSheets']['spreadsheetName'])
-
-# Get the worksheet
-ws_cuentas = sh.worksheet("CUENTAS_TOTALES")
+ws_cuentas = read_gsheet(gc_credentials=config['GoogleSheets']['credentials']['path'],
+                         spreadsheet_name=config['GoogleSheets']['spreadsheetName'],
+                         worksheet_name="CUENTAS_TOTALES")
 
 st.write(ws_cuentas.acell("B2").value)
 
@@ -43,7 +37,7 @@ MONTH = left_column.slider("MONTH", 1, 12, 7)
 
 # Cargar el pipeline desde el archivo
 
-model = joblib.load("./models/linearregression.joblib")
+model = joblib.load(f"{config['Models']['path']}/linearregression.joblib")
 df = pd.DataFrame(
     data=[[INGRESOS, YEAR, MONTH]],
     columns=['INGRESOS','YEAR','MONTH'],
