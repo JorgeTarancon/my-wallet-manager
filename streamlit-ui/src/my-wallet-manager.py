@@ -35,8 +35,7 @@ INGRESOS = left_column.slider("Earnings", 0.0, 4000.0, 2600.0)
 YEAR = right_column.slider("YEAR", 2020, 2100, 2024)
 MONTH = left_column.slider("MONTH", 1, 12, 7)
 
-# Cargar el pipeline desde el archivo
-
+# Load model from models folder
 model = joblib.load(f"{config['Models']['path']}/linearregression.joblib")
 df = pd.DataFrame(
     data=[[INGRESOS, YEAR, MONTH]],
