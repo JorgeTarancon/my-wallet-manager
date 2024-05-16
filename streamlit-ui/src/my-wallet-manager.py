@@ -21,7 +21,19 @@ from utils.utils import read_gsheet
 # Read config passed as argument
 config = ast.literal_eval(sys.argv[1])
 
-st.title(config['appName'])
+# App configuration in explorer tab
+st.set_page_config(
+    page_title="Spends Estimator",
+    page_icon=":moneybag:",
+)
+
+# Logo as header
+st.image("./streamlit-ui/images/header.png", use_column_width=True)
+
+st.title(f"{config['appName']} :moneybag:")
+st.header("Estimate your monthly spends: set your requirements \
+            and check the result!")
+
 st.write(config['appDescription'])
 
 ws_cuentas = read_gsheet(gc_credentials=config['GoogleSheets']['credentials']['path'],
@@ -35,13 +47,26 @@ INGRESOS = left_column.slider("Earnings", 0.0, 4000.0, 2600.0)
 YEAR = right_column.slider("YEAR", 2020, 2100, 2024)
 MONTH = left_column.slider("MONTH", 1, 12, 7)
 
-# Load model from models folder
-model = joblib.load(f"{config['Models']['path']}/linearregression.joblib")
-df = pd.DataFrame(
-    data=[[INGRESOS, YEAR, MONTH]],
-    columns=['INGRESOS','YEAR','MONTH'],
-)
-result = model.predict(df)
+model_name = st.selectbox("Estimator", ("Linear Regression", "XGBoost"))
 
-st.write(f"The estimated spends are: {round(result[0][0], 2)}")
+ask_spends = st.button("Get estimated monthly spends")
+
+if ask_spends:
+    if model_name == "Linear Regression":
+        model_name = "linearregression"
+    else:
+        model_name = "xgbregressor"
+
+    # Load model from models folder
+    model = joblib.load(f"{config['Models']['path']}/{model_name}.joblib")
+    df = pd.DataFrame(
+        data=[[INGRESOS, YEAR, MONTH]],
+        columns=['INGRESOS', 'YEAR', 'MONTH'],
+    )
+    result = model.predict(df)
+
+    if model_name == "linearregression":
+        st.write(f"The estimated spends are: {round(result[0][0], 2)}")
+    else:
+        st.write(f"The estimated spends are: {round(result[0], 2)}")
 ######################
