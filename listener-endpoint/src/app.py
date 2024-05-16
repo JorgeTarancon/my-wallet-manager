@@ -1,3 +1,9 @@
+"""
+Listener Endpoint Script
+
+This script is used as a listentener and making requests to the Yahoo Finance API.
+"""
+
 ######################
 #     LIBRARIES      #
 ######################
@@ -7,7 +13,6 @@ from datetime import datetime
 import logging
 
 from utils.utils import read_config
-
 ######################
 
 
@@ -15,6 +20,10 @@ from utils.utils import read_config
 #     FUNCTIONS      #
 ######################
 def main(config: dict):
+    """
+    Función principal.
+    """
+
     # Creamos el directorio de logs si no existe
     logs_dir = os.path.join(os.path.dirname(__file__), config['logs']['path'])
     os.makedirs(logs_dir, exist_ok=True)

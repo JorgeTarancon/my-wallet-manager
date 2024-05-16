@@ -1,3 +1,7 @@
+"""
+This script is the main script for the Streamlit app.
+"""
+
 ######################
 #     LIBRARIES      #
 ######################

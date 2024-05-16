@@ -1,3 +1,8 @@
+"""
+This script is used to start the Streamlit app.
+It reads the configuration file, sets the logging and starts the Streamlit app.
+"""
+
 ######################
 #     LIBRARIES      #
 ######################
@@ -13,6 +18,10 @@ from utils.utils import read_config
 #     FUNCTIONS      #
 ######################
 def start_streamlit_app(script_path, config):
+    """
+    Start Streamlit app.
+    """
+    
     try:
         subprocess.run(["streamlit", "run", script_path, f"{config}"], check=True)
     except subprocess.CalledProcessError as e:
@@ -49,5 +58,6 @@ if config:
             os.path.join(os.path.dirname(__file__), f"{config['scriptName']}.py"), str(config)
             )
     else:
-        logging.error("Error when starting Streamlit app: %s.py does not exist. Please reviw configuration file.", config['scriptName'])
+        logging.error("Error when starting Streamlit app: %s.py does not exist.\
+                      Please reviw configuration file.", config['scriptName'])
 ######################
