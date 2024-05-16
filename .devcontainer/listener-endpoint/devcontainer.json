@@ -1,0 +1,60 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "listener-endpoint-devcontainer",
+	"build": {
+		"context": "../../",//../../listener-endpoint
+		"dockerfile": "dev.Dockerfile"
+	},
+	"workspaceFolder": "/app",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=delegated",
+	"mounts": [
+		"source=${localEnv:USERPROFILE}/.gitconfig,target=/etc/gitconfig,type=bind,consistency=delegated"
+	],
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {
+			"ppa": true,
+			"version": "latest"
+		},
+		"ghcr.io/jungaretti/features/make:1": {}
+	},
+	//"postCreateCommand": "poetry config virtualenvs.create false && poetry install",
+	"customizations": {
+		"vscode": {
+		  "extensions": [
+			"ms-python.python",
+			"ms-python.flake8",
+			"ms-python.vscode-pylance",
+			"ms-python.isort",
+			"ms-python.black-formatter",
+			"eamodio.gitlens",
+			"ms-toolsai.jupyter",
+			"tamasfe.even-better-toml",
+            "github.copilot"
+			],
+
+			"settings": {
+				"editor.rulers": [
+					120
+				],
+				"files.trimFinalNewlines": true,
+				"files.trimTrailingWhitespace": true,
+				"files.insertFinalNewline": true,
+				"isort.args": [
+					"--settings-path=/app/pyproject.toml"
+				],
+				"python.formatting.blackArgs": [
+					"--config=/app/pyproject.toml"
+				],
+				"editor.formatOnSave": true,
+				"[python]": {
+					"editor.defaultFormatter": "ms-python.flake8",
+					"editor.formatOnSave": true,
+					"editor.codeActionsOnSave": {
+						"source.organizeImports": true
+					}
+				}
+			}
+		}
+	}
+}
