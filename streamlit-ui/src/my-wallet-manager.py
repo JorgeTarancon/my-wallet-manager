@@ -43,7 +43,7 @@ MONTH = left_column.slider("MONTH", 1, 12, 7)
 
 # Cargar el pipeline desde el archivo
 
-model = joblib.load("../models/linearregression.joblib")
+model = joblib.load("./models/linearregression.joblib")
 df = pd.DataFrame(
     data=[[INGRESOS, YEAR, MONTH]],
     columns=['INGRESOS','YEAR','MONTH'],

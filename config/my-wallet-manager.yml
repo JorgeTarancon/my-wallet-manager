@@ -9,5 +9,5 @@ logs:
 
 GoogleSheets:
   credentials:
-    path: ../config/google_sheets_credentials.json
+    path: ./config/google_sheets_credentials.json
   spreadsheetName: Mock_Cartera_de_acciones
