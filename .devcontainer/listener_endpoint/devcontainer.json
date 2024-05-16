@@ -3,7 +3,7 @@
 {
 	"name": "listener-endpoint-devcontainer",
 	"build": {
-		"context": "../../",//../../listener-endpoint
+		"context": "../../",//../../listener_endpoint
 		"dockerfile": "dev.Dockerfile"
 	},
 	"workspaceFolder": "/app",

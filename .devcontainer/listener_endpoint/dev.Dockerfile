@@ -3,7 +3,7 @@ FROM python:3.11-slim-bullseye
 RUN apt-get update --fix-missing
 
 ENV HOMEDIR=/app
-ENV COMPONENT=/listener-endpoint
+ENV COMPONENT=/listener_endpoint
 
 RUN mkdir -p $HOMEDIR
 
