@@ -9,6 +9,8 @@ import os
 import logging
 import yaml
 import gspread
+from dotenv import load_dotenv
+import json
 ######################
 
 ######################
@@ -45,8 +47,8 @@ def read_gsheet(gc_credentials: str = None,
     """
 
     # Connect to Google Sheets
-    gc = gspread.service_account(
-        filename=gc_credentials)
+    gc = gspread.service_account_from_dict(
+        gc_credentials)
 
     # Open the Google Sheet
     sh = gc.open(spreadsheet_name)
@@ -55,4 +57,20 @@ def read_gsheet(gc_credentials: str = None,
     gsheet = sh.worksheet(worksheet_name)
 
     return gsheet
+
+def get_env_variable(variable: str = None,
+                    is_json: bool = False):
+    """
+    Read an environment variable.
+    """
+    try:
+        load_dotenv("../config/.env")
+    except: pass
+
+    credentials = os.getenv(variable)
+
+    if is_json:
+        credentials = json.loads(credentials)
+
+    return credentials
 ######################
