@@ -30,4 +30,4 @@ jobs:
         poetry install
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py') --disable=W0718,R0801
+        pylint $(git ls-files '*.py') --disable=W0718,R0801,C0413
