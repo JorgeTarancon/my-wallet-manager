@@ -11,7 +11,6 @@ import os
 import logging
 from datetime import datetime
 import joblib
-import gspread
 import numpy as np
 import pandas as pd
 from xgboost import XGBRegressor
@@ -29,6 +28,10 @@ from utils.utils import read_config, read_gsheet, get_env_variable
 #     FUNCTIONS      #
 ######################
 def evaluate(y_test, y_pred) -> tuple:
+    """
+    Regression evaluation.
+    """
+
     mse = mean_squared_error(y_test, y_pred)
     rmse = np.sqrt(mse)
     r2 = r2_score(y_test, y_pred)
@@ -40,17 +43,25 @@ def evaluate(y_test, y_pred) -> tuple:
     return mse, rmse, r2
 
 def split_train_test(df: pd.DataFrame, features: list, target: list, test_size:float=0.2, random_state:int=42) -> tuple:
-    X, y = df[features], df[target]
+    """
+    Train test split function.
+    """
+
+    x, y = df[features], df[target]
 
     # Split the dataset into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=random_state)
 
-    print(f"Number of training instances: {len(X_train)}")
-    print(f"Number of testing instances: {len(X_test)}")
+    print(f"Number of training instances: {len(x_train)}")
+    print(f"Number of testing instances: {len(x_test)}")
 
-    return X_train, X_test, y_train, y_test
+    return x_train, x_test, y_train, y_test
 
 def create_pipeline(model: object) -> object:
+    """
+    Create a ml pipeline.
+    """
+
     pipeline = Pipeline([
         ('scaler', StandardScaler()), # Standardize features
         ('regressor', model) # Regressor model
@@ -58,17 +69,25 @@ def create_pipeline(model: object) -> object:
 
     return pipeline
 
-def ml_pipeline(X_train, y_train, X_test, y_test, *args) -> None:
+def ml_pipeline(x_train, y_train, x_test, y_test, *args) -> None:
+    """
+    Creates as many ml pipelines as *args.
+    """
+
     for arg in args:
         print(f'---{arg.steps[1][1].__class__.__name__}---')
         # Fit the pipeline on the training data
-        arg.fit(X_train, y_train)
+        arg.fit(x_train, y_train)
         # Predict on the test set
-        y_pred = arg.predict(X_test)
+        y_pred = arg.predict(x_test)
 
         mse, rmse, r2 = evaluate(y_test, y_pred)
 
 def save_models(*args) -> None:
+    """
+    Save models into joblib file.
+    """
+
     for arg in args:
         print(f"Saving {arg.steps[1][1].__class__.__name__} model...")
         joblib.dump(arg, f"../models/{arg.steps[1][1].__class__.__name__.lower()}.joblib")
@@ -89,10 +108,10 @@ def main(app_config: dict):
         format="%(asctime)s - %(levelname)s - %(message)s",
         filemode="w",
     )
-    ## TEST ##
+
     gs_credentials = get_env_variable(variable="GOOGLE_SHEETS_CREDENTIALS",
                                         is_json=True)
-    ## TEST ##
+
     ws_contabilidad = read_gsheet(gc_credentials=gs_credentials,
                                     spreadsheet_name="Mock_Cartera_de_acciones",
                                     worksheet_name="CONTABILIDAD")
@@ -110,15 +129,19 @@ def main(app_config: dict):
     df['MONTH'] = df['FECHA'].map(lambda x: x.split('-')[0]).map(month_numbers)
     df['YEAR'] = df['FECHA'].map(lambda x: int(x.split('-')[1]))
 
-    df.drop(columns=['FECHA', 'OBSERVACIONES', 'PORCENTAJE LIQUIDEZ', 'PORCENTAJE INVERSIÓN', 'PORCENTAJE GASTOS'], inplace=True)
+    df.drop(columns=['FECHA', 'OBSERVACIONES', 'PORCENTAJE LIQUIDEZ', 'PORCENTAJE INVERSIÓN', 'PORCENTAJE GASTOS'],
+            inplace=True)
 
-    df['INGRESOS'] = df['INGRESOS'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).astype(float)
+    df['INGRESOS'] = df['INGRESOS'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).\
+                                    astype(float)
     df['GASTOS'] = df['GASTOS'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).astype(float)
-    df['INVERSIÓN'] = df['INVERSIÓN'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).astype(float)
-    df['LIQUIDEZ'] = df['LIQUIDEZ'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).astype(float)
+    df['INVERSIÓN'] = df['INVERSIÓN'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).\
+                                    astype(float)
+    df['LIQUIDEZ'] = df['LIQUIDEZ'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).\
+                                    astype(float)
 
     # Split the dataset into training and testing sets
-    X_train, X_test, y_train, y_test = split_train_test(df=df,
+    x_train, x_test, y_train, y_test = split_train_test(df=df,
                                                         features=['INGRESOS','YEAR','MONTH'],
                                                         target=['GASTOS'])
 
@@ -127,7 +150,7 @@ def main(app_config: dict):
     xgboost_pipeline = create_pipeline(model=XGBRegressor(n_estimators=1000)) # XGBoost pipeline
 
     # Run pipelines
-    ml_pipeline(X_train, y_train, X_test, y_test, lr_pipeline, xgboost_pipeline)
+    ml_pipeline(x_train, y_train, x_test, y_test, lr_pipeline, xgboost_pipeline)
 
     # Save models
     save_models(lr_pipeline, xgboost_pipeline)

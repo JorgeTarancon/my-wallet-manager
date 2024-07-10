@@ -7,10 +7,10 @@ This module contains utility functions that are used in the project.
 ######################
 import os
 import logging
+import json
 import yaml
 import gspread
 from dotenv import load_dotenv
-import json
 ######################
 
 ######################
