@@ -6,7 +6,7 @@ name: Retrain model
 on: [push]
 
 jobs:
-  detect-changes:
+  retrain-model:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
         pip install poetry
         poetry config virtualenvs.create false
 
-    - name: Install dependencies for listener_endpoint component
+    - name: Install dependencies for model_trainer component
       working-directory: ./model_trainer
       run: |
         poetry install
