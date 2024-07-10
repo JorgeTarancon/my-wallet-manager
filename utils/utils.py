@@ -65,7 +65,8 @@ def get_env_variable(variable: str = None,
     """
     try:
         load_dotenv("../config/.env")
-    except: pass
+    except Exception as e:
+        logging.error("Error loading the .env file: %s", e)
 
     credentials = os.getenv(variable)
 

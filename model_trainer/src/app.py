@@ -40,9 +40,11 @@ def evaluate(y_test, y_pred) -> tuple:
     print(f"\tRoot Mean Squared Error (RMSE): {rmse}")
     print(f"\tR-squared (R2) Score: {r2}")
 
-    return mse, rmse, r2
+    #return mse, rmse, r2
 
-def split_train_test(df: pd.DataFrame, features: list, target: list, test_size:float=0.2, random_state:int=42) -> tuple:
+def split_train_test(df: pd.DataFrame, features: list,
+                     target: list, test_size:float=0.2,
+                     random_state:int=42) -> tuple:
     """
     Train test split function.
     """
@@ -50,7 +52,8 @@ def split_train_test(df: pd.DataFrame, features: list, target: list, test_size:f
     x, y = df[features], df[target]
 
     # Split the dataset into training and testing sets
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=random_state)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size,
+                                                        random_state=random_state)
 
     print(f"Number of training instances: {len(x_train)}")
     print(f"Number of testing instances: {len(x_test)}")
@@ -81,7 +84,7 @@ def ml_pipeline(x_train, y_train, x_test, y_test, *args) -> None:
         # Predict on the test set
         y_pred = arg.predict(x_test)
 
-        mse, rmse, r2 = evaluate(y_test, y_pred)
+        evaluate(y_test, y_pred)
 
 def save_models(*args) -> None:
     """
@@ -129,15 +132,21 @@ def main(app_config: dict):
     df['MONTH'] = df['FECHA'].map(lambda x: x.split('-')[0]).map(month_numbers)
     df['YEAR'] = df['FECHA'].map(lambda x: int(x.split('-')[1]))
 
-    df.drop(columns=['FECHA', 'OBSERVACIONES', 'PORCENTAJE LIQUIDEZ', 'PORCENTAJE INVERSIÓN', 'PORCENTAJE GASTOS'],
+    df.drop(columns=['FECHA', 'OBSERVACIONES', 'PORCENTAJE LIQUIDEZ',
+                     'PORCENTAJE INVERSIÓN', 'PORCENTAJE GASTOS'],
             inplace=True)
 
-    df['INGRESOS'] = df['INGRESOS'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).\
+    df['INGRESOS'] = df['INGRESOS'].map(lambda x: x.replace('€', '').strip().\
+                                    replace('.','').replace(',','.')).\
                                     astype(float)
-    df['GASTOS'] = df['GASTOS'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).astype(float)
-    df['INVERSIÓN'] = df['INVERSIÓN'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).\
+    df['GASTOS'] = df['GASTOS'].map(lambda x: x.replace('€', '').strip().\
+                                    replace('.','').replace(',','.')).\
                                     astype(float)
-    df['LIQUIDEZ'] = df['LIQUIDEZ'].map(lambda x: x.replace('€', '').strip().replace('.','').replace(',','.')).\
+    df['INVERSIÓN'] = df['INVERSIÓN'].map(lambda x: x.replace('€', '').strip().\
+                                    replace('.','').replace(',','.')).\
+                                    astype(float)
+    df['LIQUIDEZ'] = df['LIQUIDEZ'].map(lambda x: x.replace('€', '').strip().\
+                                    replace('.','').replace(',','.')).\
                                     astype(float)
 
     # Split the dataset into training and testing sets
