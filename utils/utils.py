@@ -58,13 +58,14 @@ def read_gsheet(gc_credentials: str = None,
 
     return gsheet
 
-def get_env_variable(variable: str = None,
+def get_env_variable(env_filepath: str,
+                    variable: str = None,
                     is_json: bool = False):
     """
     Read an environment variable.
     """
     try:
-        load_dotenv("../config/.env")
+        load_dotenv(env_filepath)
     except Exception as e:
         logging.error("Error loading the .env file: %s", e)
 

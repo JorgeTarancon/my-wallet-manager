@@ -8,6 +8,7 @@ This script is used to train the model.
 #     LIBRARIES      #
 ######################
 import os
+import sys
 import logging
 from datetime import datetime
 import joblib
@@ -19,6 +20,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
+
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../"))
 
 from utils.utils import read_config, read_gsheet, get_env_variable
 ######################
@@ -93,7 +96,9 @@ def save_models(*args) -> None:
 
     for arg in args:
         print(f"Saving {arg.steps[1][1].__class__.__name__} model...")
-        joblib.dump(arg, f"../models/{arg.steps[1][1].__class__.__name__.lower()}.joblib")
+        joblib.dump(arg, os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                    "../../",
+                                    f"models/{arg.steps[1][1].__class__.__name__.lower()}.joblib"))
 
 def main(app_config: dict):
     """
@@ -112,7 +117,10 @@ def main(app_config: dict):
         filemode="w",
     )
 
-    gs_credentials = get_env_variable(variable="GOOGLE_SHEETS_CREDENTIALS",
+    gs_credentials = get_env_variable(env_filepath=os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                                "../../",
+                                                                "config/.env"),
+                                        variable="GOOGLE_SHEETS_CREDENTIALS",
                                         is_json=True)
 
     ws_contabilidad = read_gsheet(gc_credentials=gs_credentials,
