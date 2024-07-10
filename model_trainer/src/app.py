@@ -22,7 +22,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../"))
-
 from utils.utils import read_config, read_gsheet, get_env_variable
 ######################
 
@@ -117,9 +116,10 @@ def main(app_config: dict):
         filemode="w",
     )
 
-    gs_credentials = get_env_variable(env_filepath=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                                                "../../",
-                                                                "config/.env"),
+    gs_credentials = get_env_variable(env_filepath=os.path.join(
+                                                        os.path.dirname(os.path.realpath(__file__)),
+                                                        "../../",
+                                                        "config/.env"),
                                         variable="GOOGLE_SHEETS_CREDENTIALS",
                                         is_json=True)
 
