@@ -2,7 +2,7 @@ name: Retrain model
 
 #on:
   #schedule:
-    #- cron: '57 16 10 * *' # Run every 5th day of the month at 9:00 UTC
+    #- cron: '57 16 10 * *' # Run every 10th day of the month at 16:57 UTC
 on: [push]
 
 jobs:
@@ -29,7 +29,6 @@ jobs:
         poetry install
 
     - name: Retrain model
-      working-directory: ./model_trainer
       env:
         GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
-      run: python src/app.py
+      run: python model_trainer/src/app.py
