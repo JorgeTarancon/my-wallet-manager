@@ -1,9 +1,8 @@
 name: Retrain model
 
-#on:
-  #schedule:
-    #- cron: '50 17 10 * *' # Run every 10th day of the month at 17:50 UTC
-on: [push]
+on:
+  schedule:
+    - cron: '50 17 10 * *' # Run every 10th day of the month at 17:50 UTC
 
 jobs:
   retrain-model:
