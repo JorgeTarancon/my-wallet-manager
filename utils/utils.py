@@ -7,8 +7,10 @@ This module contains utility functions that are used in the project.
 ######################
 import os
 import logging
+import json
 import yaml
 import gspread
+from dotenv import load_dotenv
 ######################
 
 ######################
@@ -45,8 +47,8 @@ def read_gsheet(gc_credentials: str = None,
     """
 
     # Connect to Google Sheets
-    gc = gspread.service_account(
-        filename=gc_credentials)
+    gc = gspread.service_account_from_dict(
+        gc_credentials)
 
     # Open the Google Sheet
     sh = gc.open(spreadsheet_name)
@@ -55,4 +57,22 @@ def read_gsheet(gc_credentials: str = None,
     gsheet = sh.worksheet(worksheet_name)
 
     return gsheet
+
+def get_env_variable(env_filepath: str,
+                    variable: str = None,
+                    is_json: bool = False):
+    """
+    Read an environment variable.
+    """
+    try:
+        load_dotenv(env_filepath)
+    except Exception as e:
+        logging.error("Error loading the .env file: %s", e)
+
+    credentials = os.getenv(variable)
+
+    if is_json:
+        credentials = json.loads(credentials)
+
+    return credentials
 ######################
